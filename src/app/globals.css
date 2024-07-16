@@ -2,32 +2,131 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  margin: 100px;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+h1 {
+  display: block;
+  font-size: 2em;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+h2 {
+  display: block;
+  font-size: 1.5em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+h3 {
+  display: block;
+  font-size: 1.17em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+h4 {
+  display: block;
+  margin-top: 1.33em;
+  margin-bottom: 1.33em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+h5 {
+  display: block;
+  font-size: 0.83em;
+  margin-top: 1.67em;
+  margin-bottom: 1.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+h6 {
+  display: block;
+  font-size: 0.67em;
+  margin-top: 2.33em;
+  margin-bottom: 2.33em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+ul {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+ol {
+  list-style-type: decimal;
+  list-style-position: inside;
+}
+ul ul,
+ol ul {
+  list-style-type: circle;
+  list-style-position: inside;
+  margin-left: 15px;
+}
+ol ol,
+ul ol {
+  list-style-type: lower-latin;
+  list-style-position: inside;
+  margin-left: 15px;
+}
+
+*:focus-visible {
+  background: rgba(0, 0, 0, 0.01);
+  outline: none;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.foo {
+  position: absolute;
+  border-color: #4b5563;
+  border-width: 2px;
+  width: 25px;
+  height: 25px;
+  border: none;
+}
+
+.handle-se {
+  bottom: -2px;
+  right: -2px;
+  cursor: se-resize;
+  border-bottom: 2px solid #4b5563;
+  border-right: 2px solid #4b5563;
+}
+
+.handle-sw {
+  bottom: -2px;
+  left: -2px;
+  cursor: sw-resize;
+  border-bottom: 2px solid #4b5563;
+  border-left: 2px solid #4b5563;
+}
+
+.handle-nw {
+  top: -2px;
+  left: -2px;
+  cursor: nw-resize;
+  border-top: 2px solid #4b5563;
+  border-left: 2px solid #4b5563;
+}
+
+.handle-ne {
+  top: -2px;
+  right: -2px;
+  cursor: ne-resize;
+  border-top: 2px solid #4b5563;
+  border-right: 2px solid #4b5563;
 }

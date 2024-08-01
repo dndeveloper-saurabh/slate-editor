@@ -1,216 +1,103 @@
 "use client";
+
+import Image from "next/image";
 import { useState } from "react";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import {
-  MdOutlineArrowBackIos,
-  MdOutlineArrowForwardIos,
-} from "react-icons/md";
-import { Button, Image, Upload, UploadFile, UploadProps } from "antd";
-import { BsPlusCircle } from "react-icons/bs";
-import { IoCloudDone } from "react-icons/io5";
+import { FaRegStar, FaShare, FaStar } from "react-icons/fa6";
+import { IoMdRemoveCircleOutline } from "react-icons/io";
 
-const imageUrl = [
-  "https://i.natgeofe.com/n/2a832501-483e-422f-985c-0e93757b7d84/6_3x2.jpg",
-  "https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067_640.png",
-  "https://img.artpal.com/565372/14-23-4-8-13-3-53m.jpg",
-  "https://www.superprof.co.in/blog/wp-content/uploads/2018/02/landscape-photography-tutorials.jpg",
-  "https://cdn.prod.website-files.com/63a02e61e7ffb565c30bcfc7/65ea99845e53084280471b71_most%20beautiful%20landscapes%20in%20the%20world.webp",
-  "https://cdn.pixabay.com/photo/2023/11/04/10/03/bear-8364583_640.png",
-  "https://images.unsplash.com/photo-1476610182048-b716b8518aae?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Nnx8fGVufDB8fHx8fA%3D%3D",
-];
+const imageUrl =
+  "https://images.pexels.com/photos/5774802/pexels-photo-5774802.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
 
-function SampleNextArrow(props: any) {
-  const { className, style, onClick } = props;
+function PostListItem() {
+  const [removed, setRemoved] = useState(false);
+
+  const handleRemove = () => {
+    setRemoved(true);
+  };
+
   return (
     <div
-      className={className}
+      className="font-featureRegular overflow-hidden"
       style={{
-        ...style,
-        display: "block",
+        maxHeight: removed ? "0px" : "450px",
+        opacity: removed ? 0 : 1,
+        transition: "opacity 300ms, max-height 300ms 300ms",
       }}
-      onClick={onClick}
     >
-      <MdOutlineArrowForwardIos
-        className="text-md"
-        style={{
-          color: "black",
-          width: "100%",
-          height: "100%",
-        }}
-      />
-    </div>
-  );
-}
-
-function SamplePrevArrow(props: any) {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{
-        ...style,
-        display: "block",
-      }}
-      onClick={onClick}
-    >
-      <MdOutlineArrowBackIos
-        className="text-md"
-        style={{
-          color: "black",
-          width: "100%",
-          height: "100%",
-        }}
-      />
-    </div>
-  );
-}
-const getBase64 = (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
-
-export default function Home() {
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
-  // return ();
-
-  const handlePreview = async (file: UploadFile) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj as File);
-    }
-
-    setPreviewImage(file.url || (file.preview as string));
-    setPreviewOpen(true);
-  };
-
-  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
-    setFileList(newFileList);
-
-  const uploadButton = (
-    <button
-      className="flex items-center flex-col justify-center"
-      style={{ border: 0, background: "none" }}
-      type="button"
-    >
-      <BsPlusCircle className="text-lg text-black text-opacity-80" />
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </button>
-  );
-
-  const wait = async (timer: number) => {
-    return new Promise((resolve) => setTimeout(resolve, timer));
-  };
-
-  const handleSubmit = async () => {
-    for (let i = 0; i < fileList.length; i++) {
-      const file = fileList[i];
-
-      if (file.status === "done") continue;
-
-      file.status = "uploading";
-      file.percent = 20;
-      // @ts-ignore
-      file.isUploaded = false;
-      setFileList([...fileList]);
-      await wait(1000);
-
-      file.percent = 40;
-      setFileList([...fileList]);
-      await wait(1000);
-      file.percent = 60;
-      setFileList([...fileList]);
-      await wait(1000);
-      file.percent = 80;
-      setFileList([...fileList]);
-      await wait(1000);
-      file.percent = 100;
-      file.status = "done";
-      // @ts-ignore
-      file.isUploaded = true;
-      setFileList([...fileList]);
-
-      await wait(1000);
-
-      // if (file.status === "uploading") {
-      //   uploadFile().then(() => {
-      //     file.status = "done";
-      //     setFileList([...fileList]);
-      //   });
-      // }
-    }
-  };
-
-  return (
-    <div className="w-screen h-screen bg-primary flex items-center justify-center">
-      <div className="w-[900px]">
-        <div className="w-full h-auto border-2 border-dashed p-4">
-          <Upload
-            action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-            listType="picture-card"
-            fileList={fileList}
-            onPreview={handlePreview}
-            onChange={handleChange}
-            className="my-classname"
-            rootClassName="root-classname"
-            itemRender={(
-              originNode,
-              file,
-              fileList,
-              { download, preview, remove }
-            ) => {
-              // @ts-ignore
-              console.log("file.isUploaded - ", file.isUploaded);
-              return (
-                <div className={"relative w-full h-full "}>
-                  {originNode}
-                  {/* @ts-ignore */}
-                  {file.isUploaded && (
-                    <div className="rounded-[8px] absolute top-0 left-0 w-full h-full bg-green-600 bg-opacity-35 flex items-center justify-center text-4xl text-white">
-                      <IoCloudDone />
-                    </div>
-                  )}
-                </div>
-              );
-            }}
-          >
-            {fileList.length >= 20 ? null : uploadButton}
-          </Upload>
-          {previewImage && (
-            <Image
-              wrapperStyle={{ display: "none" }}
-              preview={{
-                visible: previewOpen,
-                onVisibleChange: (visible) => setPreviewOpen(visible),
-                afterOpenChange: (visible) => !visible && setPreviewImage(""),
-              }}
-              src={previewImage}
-            />
-          )}
-          <div className="flex justify-end mt-5">
-            <Button onClick={handleSubmit}>Save Carousel</Button>
-          </div>
+      {/* Author */}
+      <div className="flex items-center gap-3 mb-[16px] mt-[32px]">
+        <div className="w-[20px] h-[20px]">
+          <Image
+            alt="sd"
+            src={imageUrl}
+            className="w-full h-full object-cover rounded-full"
+            width={20}
+            height={20}
+          />
+        </div>
+        <div>
+          <span>Saurabh Singh</span>
         </div>
       </div>
-      {/* <svg
-        stroke="currentColor"
-        fill="currentColor"
-        stroke-width="0"
-        viewBox="0 0 24 24"
-        height="1em"
-        width="1em"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path fill="none" d="M0 0h24v24H0V0z"></path>
-        <path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
-      </svg> */}
+      {/* Post Content */}
+      <div className="flex">
+        {/* Post Text Content */}
+        <div className="flex-1">
+          <h2 className="text-[24px] leading-[30px] line-clamp-3 font-bold font-featureBold">
+            How I Built a Custom Protein-Binding Dataset for Machine Learning
+            (in 5 steps)
+          </h2>
+          <p className="pt-[8px] max-h-[40px] line-clamp-2 text-[16px] text-[#6B6B6B] font-normal">
+            A full guide with code, data visualizations, and sources
+          </p>
+          <div className="pt-[10px] flex items-center justify-between h-[48px]">
+            <div className="flex items-center gap-3 text-xs text-appBlack">
+              <span className="flex items-center gap-1">
+                <FaStar className="text-[#d9c503] mb-0.5" />{" "}
+                <span>5 min read</span>
+              </span>
+              <div className="w-1 h-1 rounded-full bg-gray-300"></div>
+              <span>Technology</span>
+              <div className="w-1 h-1 rounded-full bg-gray-300"></div>
+              <span>2d ago</span>
+            </div>
+            <div className="flex items-center gap-3 text-base text-appBlack text-opacity-60">
+              <span className="cursor-pointer" onClick={handleRemove}>
+                <IoMdRemoveCircleOutline />
+              </span>
+              <span className="cursor-pointer">
+                <FaShare />
+              </span>
+            </div>
+          </div>
+        </div>
+        {/* Post Image */}
+        <div className="ml-[50px] h-[107px] w-[160px] ">
+          <Image
+            alt="sd"
+            src={imageUrl}
+            width={200}
+            height={200}
+            className="w-full h-full object-cover rounded-[4px] bg-gray-400"
+          />
+        </div>
+      </div>
+      <hr className="border-dashed border-[#1f1d1a1f] mt-[20px]" />
+    </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <div className="w-screen h-screen bg-primary flex items-center justify-center">
+      <div className="w-full max-w-[700px] h-[90vh] overflow-auto">
+        <PostListItem />
+        <PostListItem />
+        <PostListItem />
+        <PostListItem />
+        <PostListItem />
+        <PostListItem />
+      </div>
     </div>
   );
 }

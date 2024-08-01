@@ -2,11 +2,6 @@ import { Descendant, BaseEditor, BaseRange, Range, Element } from "slate";
 import { ReactEditor } from "slate-react";
 import { HistoryEditor } from "slate-history";
 
-type BaseElementProps = {
-  className?: string;
-  style?: React.CSSProperties;
-};
-
 export type BlockQuoteElement = {
   type: "block-quote";
   align?: string;
@@ -42,9 +37,9 @@ export type HeadingTwoElement = {
   children: Descendant[];
 };
 
-export type ImageElement = {
-  type: "image";
-  url: string;
+export type MathElement = {
+  type: "math-block";
+  latex: string;
   children: EmptyText[];
 };
 
@@ -55,6 +50,16 @@ export type ButtonElement = { type: "button"; children: Descendant[] };
 export type BadgeElement = { type: "badge"; children: Descendant[] };
 
 export type ListItemElement = { type: "list-item"; children: Descendant[] };
+
+export type ImageElement = {
+  type: "image-block";
+  src: string;
+  width?: number;
+  height?: number;
+  maxConstraints?: [number, number];
+  align?: "center" | "left" | "right";
+  children: Descendant[];
+};
 
 export type MentionElement = {
   type: "mention";
@@ -85,6 +90,7 @@ export type VideoElement = {
 export type CodeBlockElement = {
   type: "code-block";
   language: string;
+  code: string;
   children: Descendant[];
 };
 
@@ -93,21 +99,49 @@ export type CodeLineElement = {
   children: Descendant[];
 };
 
-export type SpanElement = {
-  type: "span";
-  children: Descendant[];
+export type ChooseImageElement = {
+  type: "choose-image-ui";
+  children: EmptyText[];
 };
 
-type CustomElementOne =
-  | SpanElement
+export type HRElement = {
+  type: "hr";
+  children: EmptyText[];
+};
+
+export type SectionHeaderElement = {
+  type: "section-header";
+  children: Descendant[];
+  title: string;
+  icon: string;
+};
+
+export type EmbedVideoElement = {
+  type: "embed-video";
+  url: string;
+  width: number;
+  height: number;
+  children: EmptyText[];
+};
+
+export type EnterEmbedVideoUrlUIElement = {
+  type: "enter-embed-video-url-ui";
+  children: EmptyText[];
+};
+
+type CustomElement =
   | BlockQuoteElement
+  | HRElement
   | BulletedListElement
   | CheckListItemElement
+  | SectionHeaderElement
   | EditableVoidElement
   | HeadingElement
   | HeadingTwoElement
+  | EnterEmbedVideoUrlUIElement
   | ImageElement
   | LinkElement
+  | ChooseImageElement
   | ButtonElement
   | BadgeElement
   | ListItemElement
@@ -117,11 +151,11 @@ type CustomElementOne =
   | TableRowElement
   | TableCellElement
   | TitleElement
+  | EmbedVideoElement
   | VideoElement
+  | MathElement
   | CodeBlockElement
   | CodeLineElement;
-
-type CustomElement = CustomElementOne & BaseElementProps;
 
 export type CustomText = {
   bold?: boolean;
@@ -154,13 +188,6 @@ declare module "slate" {
     Range: BaseRange & {
       [key: string]: unknown;
     };
-  }
-}
-
-declare module "slate" {
-  interface CustomTypes {
-    Editor: BaseEditor & ReactEditor;
-    Element: CustomElement;
-    Text: CustomText;
+    Node: CustomElement | Element | Text;
   }
 }

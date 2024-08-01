@@ -3,130 +3,138 @@
 @tailwind utilities;
 
 body {
-  margin: 100px;
+  /* margin: 100px; */
 }
 
-h1 {
-  display: block;
-  font-size: 2em;
-  margin-top: 0.67em;
-  margin-bottom: 0.67em;
-  margin-left: 0;
-  margin-right: 0;
-  font-weight: bold;
-}
-h2 {
-  display: block;
-  font-size: 1.5em;
-  margin-top: 0.83em;
-  margin-bottom: 0.83em;
-  margin-left: 0;
-  margin-right: 0;
-  font-weight: bold;
-}
-h3 {
-  display: block;
-  font-size: 1.17em;
-  margin-top: 1em;
-  margin-bottom: 1em;
-  margin-left: 0;
-  margin-right: 0;
-  font-weight: bold;
-}
-h4 {
-  display: block;
-  margin-top: 1.33em;
-  margin-bottom: 1.33em;
-  margin-left: 0;
-  margin-right: 0;
-  font-weight: bold;
-}
-h5 {
-  display: block;
-  font-size: 0.83em;
-  margin-top: 1.67em;
-  margin-bottom: 1.67em;
-  margin-left: 0;
-  margin-right: 0;
-  font-weight: bold;
-}
-h6 {
-  display: block;
-  font-size: 0.67em;
-  margin-top: 2.33em;
-  margin-bottom: 2.33em;
-  margin-left: 0;
-  margin-right: 0;
-  font-weight: bold;
+@font-face {
+  font-family: FeatureFlatHeadline;
+  src: url(/assets/fonts/FeatureFlatHeadline.woff2);
 }
 
-ul {
-  list-style-type: disc;
-  list-style-position: inside;
-}
-ol {
-  list-style-type: decimal;
-  list-style-position: inside;
-}
-ul ul,
-ol ul {
-  list-style-type: circle;
-  list-style-position: inside;
-  margin-left: 15px;
-}
-ol ol,
-ul ol {
-  list-style-type: lower-latin;
-  list-style-position: inside;
-  margin-left: 15px;
+@font-face {
+  font-family: FeatureFlatBold;
+  src: url(/assets/fonts/FeatureFlatText-Bold.otf);
 }
 
-*:focus-visible {
-  background: rgba(0, 0, 0, 0.01);
-  outline: none;
+@font-face {
+  font-family: FeatureFlatRegular;
+  src: url(/assets/fonts/FeatureFlatText-Regular.otf);
 }
 
-strong {
-  font-weight: bold;
+@font-face {
+  font-family: LarkenExtraBold;
+  src: url(/assets/fonts/LarkenDEMO-ExtraBold.otf);
 }
 
-.foo {
+@font-face {
+  font-family: CourierPrime;
+  src: url(/assets/fonts/CourierPrime-Regular.ttf);
+}
+
+@font-face {
+  font-family: UtopiaItalic;
+  src: url(/assets/fonts/Utopia_Italic.ttf);
+}
+
+.big-shadow {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+}
+
+.small-around-shadow {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+:where(
+    .css-dev-only-do-not-override-1uq9j6g
+  ).ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
+  background: #8f8948;
+}
+
+:where(.css-dev-only-do-not-override-1uq9j6g).ant-switch:hover:not(
+    .ant-switch-disabled
+  ),
+:where(.css-dev-only-do-not-override-1uq9j6g).ant-switch {
+  background: rgba(59, 59, 59, 0.164);
+}
+
+:where(.css-dev-only-do-not-override-1uq9j6g).ant-switch.ant-switch-checked {
+  background: #8f8948;
+}
+
+/* .slick-slide[data-index="1"] {
+  height: 628px;
+}
+
+.slick-slide[data-index="1"] > div {
+  height: 100%;
+} */
+
+.minerva-account-modal-phone-input > .selected-flag {
+  padding-left: 0 !important;
+  width: 30px !important;
+  background: transparent !important;
+}
+
+.slick-slide > div {
+  height: 250px;
+}
+
+.slider-container {
+  position: relative;
+}
+
+/* .slider-container::before {
+  content: "";
   position: absolute;
-  border-color: #4b5563;
-  border-width: 2px;
-  width: 25px;
-  height: 25px;
-  border: none;
+  top: 0;
+  left: 0;
+  width: 32.5%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.351);
+  backdrop-filter: blur(1px);
+  z-index: 1;
 }
 
-.handle-se {
-  bottom: -2px;
-  right: -2px;
-  cursor: se-resize;
-  border-bottom: 2px solid #4b5563;
-  border-right: 2px solid #4b5563;
+.slider-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32.5%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.351);
+  backdrop-filter: blur(1px);
+  z-index: 1;
+} */
+
+/* .slider-container.changing::before,
+.slider-container.changing::after {
+  animation: animCome 0.5s cubic-bezier(0.01, 0.94, 0.63, 1);
+} */
+
+.slick-slide:not(.slick-center) .image {
+  opacity: 0.5;
 }
 
-.handle-sw {
-  bottom: -2px;
-  left: -2px;
-  cursor: sw-resize;
-  border-bottom: 2px solid #4b5563;
-  border-left: 2px solid #4b5563;
+.slick-center .image {
+  box-shadow: 0 0 20px 4px rgba(0, 0, 0, 0.5);
 }
 
-.handle-nw {
-  top: -2px;
-  left: -2px;
-  cursor: nw-resize;
-  border-top: 2px solid #4b5563;
-  border-left: 2px solid #4b5563;
+@keyframes animCome {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
-.handle-ne {
-  top: -2px;
-  right: -2px;
-  cursor: ne-resize;
-  border-top: 2px solid #4b5563;
-  border-right: 2px solid #4b5563;
+.slick-next:before,
+.slick-prev:before {
+  content: "" !important;
 }

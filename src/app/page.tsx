@@ -77,6 +77,76 @@ const getBase64 = (file: File): Promise<string> =>
   });
 
 export default function Home() {
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  // return ();
+
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as File);
+    }
+
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+  };
+
+  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
+    setFileList(newFileList);
+
+  const uploadButton = (
+    <button
+      className="flex items-center flex-col justify-center"
+      style={{ border: 0, background: "none" }}
+      type="button"
+    >
+      <BsPlusCircle className="text-lg text-black text-opacity-80" />
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </button>
+  );
+
+  const wait = async (timer: number) => {
+    return new Promise((resolve) => setTimeout(resolve, timer));
+  };
+
+  const handleSubmit = async () => {
+    for (let i = 0; i < fileList.length; i++) {
+      const file = fileList[i];
+
+      if (file.status === "done") continue;
+
+      file.status = "uploading";
+      file.percent = 20;
+      // @ts-ignore
+      file.isUploaded = false;
+      setFileList([...fileList]);
+      await wait(1000);
+
+      file.percent = 40;
+      setFileList([...fileList]);
+      await wait(1000);
+      file.percent = 60;
+      setFileList([...fileList]);
+      await wait(1000);
+      file.percent = 80;
+      setFileList([...fileList]);
+      await wait(1000);
+      file.percent = 100;
+      file.status = "done";
+      // @ts-ignore
+      file.isUploaded = true;
+      setFileList([...fileList]);
+
+      await wait(1000);
+
+      // if (file.status === "uploading") {
+      //   uploadFile().then(() => {
+      //     file.status = "done";
+      //     setFileList([...fileList]);
+      //   });
+      // }
+    }
+  };
 
   return (
     <div className="w-screen h-screen bg-primary flex items-center justify-center">

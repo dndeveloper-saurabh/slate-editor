@@ -1,170 +1,105 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
-import { FaRegStar, FaShare, FaStar } from "react-icons/fa6";
-import { IoMdRemoveCircleOutline } from "react-icons/io";
-
-const imageUrl =
-  "https://images.pexels.com/photos/5774802/pexels-photo-5774802.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
-
-function PostListItem() {
-  const [removed, setRemoved] = useState(false);
-
-  const handleRemove = () => {
-    setRemoved(true);
-  };
-
-  return (
-    <div
-      className="font-featureRegular overflow-hidden"
-      style={{
-        maxHeight: removed ? "0px" : "450px",
-        opacity: removed ? 0 : 1,
-        transition: "opacity 300ms, max-height 300ms 300ms",
-      }}
-    >
-      {/* Author */}
-      <div className="flex items-center gap-3 mb-[16px] mt-[32px]">
-        <div className="w-[20px] h-[20px]">
-          <Image
-            alt="sd"
-            src={imageUrl}
-            className="w-full h-full object-cover rounded-full"
-            width={20}
-            height={20}
-          />
-        </div>
-        <div>
-          <span>Saurabh Singh</span>
-        </div>
-      </div>
-      {/* Post Content */}
-      <div className="flex">
-        {/* Post Text Content */}
-        <div className="flex-1">
-          <h2 className="text-[24px] leading-[30px] line-clamp-3 font-bold font-featureBold">
-            How I Built a Custom Protein-Binding Dataset for Machine Learning
-            (in 5 steps)
-          </h2>
-          <p className="pt-[8px] max-h-[40px] line-clamp-2 text-[16px] text-[#6B6B6B] font-normal">
-            A full guide with code, data visualizations, and sources
-          </p>
-          <div className="pt-[10px] flex items-center justify-between h-[48px]">
-            <div className="flex items-center gap-3 text-xs text-appBlack">
-              <span className="flex items-center gap-1">
-                <FaStar className="text-[#d9c503] mb-0.5" />{" "}
-                <span>5 min read</span>
-              </span>
-              <div className="w-1 h-1 rounded-full bg-gray-300"></div>
-              <span>Technology</span>
-              <div className="w-1 h-1 rounded-full bg-gray-300"></div>
-              <span>2d ago</span>
-            </div>
-            <div className="flex items-center gap-3 text-base text-appBlack text-opacity-60">
-              <span className="cursor-pointer" onClick={handleRemove}>
-                <IoMdRemoveCircleOutline />
-              </span>
-              <span className="cursor-pointer">
-                <FaShare />
-              </span>
-            </div>
-          </div>
-        </div>
-        {/* Post Image */}
-        <div className="ml-[50px] h-[107px] w-[160px] ">
-          <Image
-            alt="sd"
-            src={imageUrl}
-            width={200}
-            height={200}
-            className="w-full h-full object-cover rounded-[4px] bg-gray-400"
-          />
-        </div>
-      </div>
-      <hr className="border-dashed border-[#1f1d1a1f] mt-[20px]" />
-    </div>
-  );
-}
-
-function PostListItemPortrait() {
-  const handleRemove = () => {};
-  return (
-    <div className="w-[324px] pb-[50px]">
-      <div
-        className="w-full rounded-[4px] overflow-hidden"
-        style={{ aspectRatio: 2 / 1 }}
-      >
-        <Image
-          src={imageUrl}
-          alt="sdf"
-          className="w-full h-full object-cover"
-          width={350}
-          height={200}
-        />
-      </div>
-      {/* Author */}
-      <div className="flex items-center gap-3 mb-[16px] mt-[24px]">
-        <div className="w-[20px] h-[20px]">
-          <Image
-            alt="sd"
-            src={imageUrl}
-            className="w-full h-full object-cover rounded-full"
-            width={20}
-            height={20}
-          />
-        </div>
-        <div className="text-[13px] text-[#242424]">
-          <span>Saurabh Singh</span>
-        </div>
-      </div>
-      {/* Post Content */}
-      <div className="flex">
-        {/* Post Text Content */}
-        <div className="flex-1">
-          <h2 className="text-[20px] leading-[24px] line-clamp-3 font-bold font-featureBold">
-            How I Built a Custom Protein-Binding Dataset for Machine Learning
-            (in 5 steps)
-          </h2>
-          <p className="pt-[8px] max-h-[40px] line-clamp-2 text-[16px] text-[#6B6B6B] font-normal">
-            A full guide with code, data visualizations, and sources
-          </p>
-          <div className="flex items-center justify-between h-[48px]">
-            <div className="flex items-center gap-3 text-xs text-appBlack">
-              <span className="flex items-center gap-1">
-                <FaStar className="text-[#d9c503] mb-0.5" />{" "}
-                <span>5 min read</span>
-              </span>
-              <div className="w-1 h-1 rounded-full bg-gray-300"></div>
-              <span>Technology</span>
-              <div className="w-1 h-1 rounded-full bg-gray-300"></div>
-              <span>2d ago</span>
-            </div>
-            <div className="flex items-center gap-3 text-base text-appBlack text-opacity-60">
-              <span className="cursor-pointer" onClick={handleRemove}>
-                <IoMdRemoveCircleOutline />
-              </span>
-              <span className="cursor-pointer">
-                <FaShare />
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+import Link from "next/link";
 
 export default function Home() {
   return (
     <div className="w-screen h-screen bg-primary flex items-center justify-center">
-      <div className="w-full max-w-[700px] h-[90vh] overflow-auto grid grid-cols-2 gap-x-2 justify-items-center">
-        <PostListItemPortrait />
-        <PostListItemPortrait />
-        <PostListItemPortrait />
-        <PostListItemPortrait />
-        <PostListItemPortrait />
-        <PostListItemPortrait />
+      <div className="bg-lightPrimary flex flex-col py-8 w-full max-w-[450px] items-center gap-7">
+        <button className="border border-appBlack w-full max-w-[260px] h-[45px] flex items-center justify-between px-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            width="25"
+            height="25"
+            x="0"
+            y="0"
+            viewBox="0 0 512 512"
+            xmlSpace="preserve"
+          >
+            <g>
+              <path
+                d="m492.668 211.489-208.84-.01c-9.222 0-16.697 7.474-16.697 16.696v66.715c0 9.22 7.475 16.696 16.696 16.696h117.606c-12.878 33.421-36.914 61.41-67.58 79.194L384 477.589c80.442-46.523 128-128.152 128-219.53 0-13.011-.959-22.312-2.877-32.785-1.458-7.957-8.366-13.785-16.455-13.785z"
+                fill="#167EE6"
+                data-original="#167ee6"
+              ></path>
+              <path
+                d="M256 411.826c-57.554 0-107.798-31.446-134.783-77.979l-86.806 50.034C78.586 460.443 161.34 512 256 512c46.437 0 90.254-12.503 128-34.292v-.119l-50.147-86.81c-22.938 13.304-49.482 21.047-77.853 21.047z"
+                fill="#12B347"
+                data-original="#12b347"
+              ></path>
+              <path
+                d="M384 477.708v-.119l-50.147-86.81c-22.938 13.303-49.48 21.047-77.853 21.047V512c46.437 0 90.256-12.503 128-34.292z"
+                fill="#0F993E"
+                data-original="#0f993e"
+              ></path>
+              <path
+                d="M100.174 256c0-28.369 7.742-54.91 21.043-77.847l-86.806-50.034C12.502 165.746 0 209.444 0 256s12.502 90.254 34.411 127.881l86.806-50.034c-13.301-22.937-21.043-49.478-21.043-77.847z"
+                fill="#FFD500"
+                data-original="#ffd500"
+              ></path>
+              <path
+                d="M256 100.174c37.531 0 72.005 13.336 98.932 35.519 6.643 5.472 16.298 5.077 22.383-1.008l47.27-47.27c6.904-6.904 6.412-18.205-.963-24.603C378.507 23.673 319.807 0 256 0 161.34 0 78.586 51.557 34.411 128.119l86.806 50.034c26.985-46.533 77.229-77.979 134.783-77.979z"
+                fill="#FF4B26"
+                data-original="#ff4b26"
+              ></path>
+              <path
+                d="M354.932 135.693c6.643 5.472 16.299 5.077 22.383-1.008l47.27-47.27c6.903-6.904 6.411-18.205-.963-24.603C378.507 23.672 319.807 0 256 0v100.174c37.53 0 72.005 13.336 98.932 35.519z"
+                fill="#D93F21"
+                data-original="#d93f21"
+              ></path>
+            </g>
+          </svg>
+          <span className="flex-1 text-center">Join With Google</span>
+        </button>
+        <button className="border border-appBlack w-full max-w-[260px] h-[45px] flex items-center justify-between px-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            width="25"
+            height="25"
+            x="0"
+            y="0"
+            viewBox="0 0 176 176"
+            xmlSpace="preserve"
+          >
+            <g>
+              <g data-name="Layer 2">
+                <rect
+                  width="176"
+                  height="176"
+                  fill="#0077B5"
+                  rx="24"
+                  opacity="1"
+                  data-original="#0077b5"
+                ></rect>
+                <g fill="#FFFFFF">
+                  <path
+                    d="M63.4 48a15 15 0 1 1-15-15 15 15 0 0 1 15 15zM60 73v66.27a3.71 3.71 0 0 1-3.71 3.73H40.48a3.71 3.71 0 0 1-3.72-3.72V73a3.72 3.72 0 0 1 3.72-3.72h15.81A3.72 3.72 0 0 1 60 73zM142.64 107.5v32.08a3.41 3.41 0 0 1-3.42 3.42h-17a3.41 3.41 0 0 1-3.42-3.42v-31.09c0-4.64 1.36-20.32-12.13-20.32-10.45 0-12.58 10.73-13 15.55v35.86A3.42 3.42 0 0 1 90.3 143H73.88a3.41 3.41 0 0 1-3.41-3.42V72.71a3.41 3.41 0 0 1 3.41-3.42H90.3a3.42 3.42 0 0 1 3.42 3.42v5.78c3.88-5.82 9.63-10.31 21.9-10.31 27.18 0 27.02 25.38 27.02 39.32z"
+                    fill="#FFFFFF"
+                    opacity="1"
+                    data-original="#ffffff"
+                  ></path>
+                </g>
+              </g>
+            </g>
+          </svg>
+          <span className="flex-1 text-center">Join With Linkedin</span>
+        </button>
+
+        <p className="text-xs mt-4 max-w-[350px] w-full text-center">
+          Click "Sign up" to agree to Minerva's{" "}
+          <Link target="_blank" href="#">
+            <u>Terms of Service</u>
+          </Link>{" "}
+          and acknowledge that Minerva's{" "}
+          <Link target="_blank" href="#">
+            <u>Privacy Policy</u>
+          </Link>{" "}
+          applies to you.
+        </p>
       </div>
     </div>
   );

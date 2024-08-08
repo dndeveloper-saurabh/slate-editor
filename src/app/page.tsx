@@ -1,105 +1,357 @@
 "use client";
 
-import Link from "next/link";
+import {
+  DatePicker,
+  GetProp,
+  Radio,
+  RadioChangeEvent,
+  Upload,
+  UploadProps,
+} from "antd";
+import Dragger from "antd/es/upload/Dragger";
+import { useState } from "react";
+import { TiUpload } from "react-icons/ti";
+
+function getRandomDarkHexColor() {
+  let color = "#";
+  for (let i = 0; i < 3; i++) {
+    // Generate a random number between 0 and 127 (to keep it dark)
+    let randomValue = Math.floor(Math.random() * 128);
+    // Convert to hexadecimal and ensure it's two digits
+    let hex = randomValue.toString(16).padStart(2, "0");
+    color += hex;
+  }
+  return color;
+}
+
+const props: UploadProps = {
+  name: "file",
+  multiple: true,
+  action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
+  onChange(info) {
+    const { status } = info.file;
+    if (status !== "uploading") {
+      console.log(info.file, info.fileList);
+    }
+    // if (status === "done") {
+    //   message.success(`${info.file.name} file uploaded successfully.`);
+    // } else if (status === "error") {
+    //   message.error(`${info.file.name} file upload failed.`);
+    // }
+  },
+  onDrop(e) {
+    console.log("Dropped files", e.dataTransfer.files);
+  },
+};
+
+type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+
+const getBase64 = (img: FileType, callback: (url: string) => void) => {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result as string));
+  reader.readAsDataURL(img);
+};
 
 export default function Home() {
+  const [value, setValue] = useState(1);
+
+  const onChange = (e: RadioChangeEvent) => {
+    console.log("radio checked", e.target.value);
+    setValue(e.target.value);
+  };
+
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string>();
+
+  const handleChange: UploadProps["onChange"] = (info) => {
+    if (info.file.status === "uploading") {
+      setLoading(true);
+      return;
+    }
+    if (info.file.status === "done") {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj as FileType, (url) => {
+        setLoading(false);
+        setImageUrl(url);
+      });
+    }
+  };
+
+  const uploadButton = (label?: string) => (
+    <button
+      style={{ border: 0, background: "none" }}
+      className="flex flex-col items-center justify-center py-3"
+      type="button"
+    >
+      {/* {loading ? <LoadingOutlined /> : <PlusOutlined />} */}
+      <TiUpload className="text-5xl text-black text-opacity-65" />
+      <div className="text-base" style={{ marginTop: 8 }}>
+        {label ?? "Upload Event Image"}
+      </div>
+    </button>
+  );
+
   return (
     <div className="w-screen h-screen bg-primary flex items-center justify-center">
-      <div className="bg-lightPrimary flex flex-col py-8 w-full max-w-[450px] items-center gap-7">
-        <button className="border border-appBlack w-full max-w-[260px] h-[45px] flex items-center justify-between px-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            width="25"
-            height="25"
-            x="0"
-            y="0"
-            viewBox="0 0 512 512"
-            xmlSpace="preserve"
-          >
-            <g>
-              <path
-                d="m492.668 211.489-208.84-.01c-9.222 0-16.697 7.474-16.697 16.696v66.715c0 9.22 7.475 16.696 16.696 16.696h117.606c-12.878 33.421-36.914 61.41-67.58 79.194L384 477.589c80.442-46.523 128-128.152 128-219.53 0-13.011-.959-22.312-2.877-32.785-1.458-7.957-8.366-13.785-16.455-13.785z"
-                fill="#167EE6"
-                data-original="#167ee6"
-              ></path>
-              <path
-                d="M256 411.826c-57.554 0-107.798-31.446-134.783-77.979l-86.806 50.034C78.586 460.443 161.34 512 256 512c46.437 0 90.254-12.503 128-34.292v-.119l-50.147-86.81c-22.938 13.304-49.482 21.047-77.853 21.047z"
-                fill="#12B347"
-                data-original="#12b347"
-              ></path>
-              <path
-                d="M384 477.708v-.119l-50.147-86.81c-22.938 13.303-49.48 21.047-77.853 21.047V512c46.437 0 90.256-12.503 128-34.292z"
-                fill="#0F993E"
-                data-original="#0f993e"
-              ></path>
-              <path
-                d="M100.174 256c0-28.369 7.742-54.91 21.043-77.847l-86.806-50.034C12.502 165.746 0 209.444 0 256s12.502 90.254 34.411 127.881l86.806-50.034c-13.301-22.937-21.043-49.478-21.043-77.847z"
-                fill="#FFD500"
-                data-original="#ffd500"
-              ></path>
-              <path
-                d="M256 100.174c37.531 0 72.005 13.336 98.932 35.519 6.643 5.472 16.298 5.077 22.383-1.008l47.27-47.27c6.904-6.904 6.412-18.205-.963-24.603C378.507 23.673 319.807 0 256 0 161.34 0 78.586 51.557 34.411 128.119l86.806 50.034c26.985-46.533 77.229-77.979 134.783-77.979z"
-                fill="#FF4B26"
-                data-original="#ff4b26"
-              ></path>
-              <path
-                d="M354.932 135.693c6.643 5.472 16.299 5.077 22.383-1.008l47.27-47.27c6.903-6.904 6.411-18.205-.963-24.603C378.507 23.672 319.807 0 256 0v100.174c37.53 0 72.005 13.336 98.932 35.519z"
-                fill="#D93F21"
-                data-original="#d93f21"
-              ></path>
-            </g>
-          </svg>
-          <span className="flex-1 text-center">Join With Google</span>
-        </button>
-        <button className="border border-appBlack w-full max-w-[260px] h-[45px] flex items-center justify-between px-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            width="25"
-            height="25"
-            x="0"
-            y="0"
-            viewBox="0 0 176 176"
-            xmlSpace="preserve"
-          >
-            <g>
-              <g data-name="Layer 2">
-                <rect
-                  width="176"
-                  height="176"
-                  fill="#0077B5"
-                  rx="24"
-                  opacity="1"
-                  data-original="#0077b5"
-                ></rect>
-                <g fill="#FFFFFF">
-                  <path
-                    d="M63.4 48a15 15 0 1 1-15-15 15 15 0 0 1 15 15zM60 73v66.27a3.71 3.71 0 0 1-3.71 3.73H40.48a3.71 3.71 0 0 1-3.72-3.72V73a3.72 3.72 0 0 1 3.72-3.72h15.81A3.72 3.72 0 0 1 60 73zM142.64 107.5v32.08a3.41 3.41 0 0 1-3.42 3.42h-17a3.41 3.41 0 0 1-3.42-3.42v-31.09c0-4.64 1.36-20.32-12.13-20.32-10.45 0-12.58 10.73-13 15.55v35.86A3.42 3.42 0 0 1 90.3 143H73.88a3.41 3.41 0 0 1-3.41-3.42V72.71a3.41 3.41 0 0 1 3.41-3.42H90.3a3.42 3.42 0 0 1 3.42 3.42v5.78c3.88-5.82 9.63-10.31 21.9-10.31 27.18 0 27.02 25.38 27.02 39.32z"
-                    fill="#FFFFFF"
-                    opacity="1"
-                    data-original="#ffffff"
-                  ></path>
-                </g>
-              </g>
-            </g>
-          </svg>
-          <span className="flex-1 text-center">Join With Linkedin</span>
-        </button>
-
-        <p className="text-xs mt-4 max-w-[350px] w-full text-center">
-          Click "Sign up" to agree to Minerva's{" "}
-          <Link target="_blank" href="#">
-            <u>Terms of Service</u>
-          </Link>{" "}
-          and acknowledge that Minerva's{" "}
-          <Link target="_blank" href="#">
-            <u>Privacy Policy</u>
-          </Link>{" "}
-          applies to you.
-        </p>
+      <div className="w-full max-w-[900px] mx-auto py-2 h-[80vh] overflow-auto">
+        <div>
+          <h2 className="text-appBlack text-[30px] mt-8 font-larkenExtraBold">
+            Create Event
+          </h2>
+        </div>
+        <div className="mt-7">
+          <div>
+            <span className="uppercase block text-sm mb-1 font-larkenExtraBold text-black text-opacity-60">
+              Event Details
+            </span>
+            <hr />
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-4">
+            <div>
+              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
+                Event Title
+              </h4>
+              <input
+                // disabled={isPending}
+                className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
+                placeholder="Enter the Post Title"
+                type="text"
+                style={{
+                  fontVariationSettings: '"wght" 400,"opsz" 10',
+                }}
+              />
+            </div>
+            <div>
+              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
+                Event Date
+              </h4>
+              {/* <input
+                // disabled={isPending}
+                className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
+                placeholder="Enter the Post Title"
+                type="text"
+                style={{
+                  fontVariationSettings: '"wght" 400,"opsz" 10',
+                }}
+              /> */}
+              <DatePicker
+                showTime
+                onChange={(value, dateString) => {
+                  console.log("Selected Time: ", value);
+                  console.log("Formatted Selected Time: ", dateString);
+                }}
+                onOk={() => {}}
+                className="ant-picker-minerva-date"
+              />
+            </div>
+            <div>
+              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
+                Event Description
+              </h4>
+              {/* <input
+                // disabled={isPending}
+                className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
+                placeholder="Enter the Post Title"
+                type="text"
+                style={{
+                  fontVariationSettings: '"wght" 400,"opsz" 10',
+                }}
+              /> */}
+              <textarea
+                // disabled={isPending}
+                className="border text-[16px] w-full resize-none flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
+                placeholder="Enter the Post Title"
+                rows={4}
+                style={{
+                  fontVariationSettings: '"wght" 400,"opsz" 10',
+                }}
+              />
+            </div>
+            <div
+              className="flex flex-col"
+              style={{
+                gridRow: "2 / 4",
+                gridColumn: "2",
+              }}
+            >
+              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
+                Image
+              </h4>
+              <Upload
+                name="avatar"
+                listType="picture-card"
+                className="minerva-event-image-uploader"
+                showUploadList={false}
+                // beforeUpload={beforeUpload}
+                onChange={handleChange}
+              >
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="avatar"
+                    className="h-full w-full object-contain"
+                    style={{ width: "100%" }}
+                  />
+                ) : (
+                  uploadButton()
+                )}
+              </Upload>
+            </div>
+            <div>
+              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
+                Venue
+              </h4>
+              <Radio.Group
+                className="minerva-venue-radio w-full grid grid-cols-2"
+                onChange={onChange}
+                value={value}
+              >
+                <Radio value={1}>Offline</Radio>
+                <Radio value={2}>Online</Radio>
+              </Radio.Group>
+              <div className="w-full mt-3">
+                {/* <input
+                  // disabled={isPending}
+                  className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
+                  placeholder="Link to the meeting"
+                  type="text"
+                  style={{
+                    fontVariationSettings: '"wght" 400,"opsz" 10',
+                  }}
+                /> */}
+                <input
+                  // disabled={isPending}
+                  className="border text-[16px] w-full flex-1 flex-shrink mb-2 py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
+                  placeholder="Event Venue Details"
+                  type="text"
+                  style={{
+                    fontVariationSettings: '"wght" 400,"opsz" 10',
+                  }}
+                />
+                <Upload
+                  name="avatar"
+                  listType="picture-card"
+                  className="minerva-venue-image-uploader"
+                  showUploadList={false}
+                  // beforeUpload={beforeUpload}
+                  onChange={handleChange}
+                >
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt="avatar"
+                      className="h-full w-full object-contain"
+                      style={{ width: "100%" }}
+                    />
+                  ) : (
+                    uploadButton("Upload Venue Image")
+                  )}
+                </Upload>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mt-12">
+          <div>
+            <span className="uppercase block text-sm mb-1 font-larkenExtraBold text-black text-opacity-60">
+              Organizer Info
+            </span>
+            <hr />
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-4">
+            <div>
+              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
+                Organizer Name
+              </h4>
+              <input
+                // disabled={isPending}
+                className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
+                placeholder="Enter the name of the organizer"
+                type="text"
+                style={{
+                  fontVariationSettings: '"wght" 400,"opsz" 10',
+                }}
+              />
+            </div>
+            <div>
+              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
+                Organizer Info
+              </h4>
+              {/* <input
+                // disabled={isPending}
+                className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
+                placeholder="Enter the Post Title"
+                type="text"
+                style={{
+                  fontVariationSettings: '"wght" 400,"opsz" 10',
+                }}
+              /> */}
+              <textarea
+                // disabled={isPending}
+                className="border text-[16px] w-full resize-none flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
+                placeholder="Enter the Organizer Info"
+                rows={4}
+                style={{
+                  fontVariationSettings: '"wght" 400,"opsz" 10',
+                }}
+              />
+            </div>
+            <div
+              className="flex flex-col"
+              style={{
+                gridRow: "1 / 3",
+                gridColumn: "2",
+              }}
+            >
+              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
+                Organizer Image
+              </h4>
+              <Upload
+                name="avatar"
+                listType="picture-card"
+                className="minerva-organizer-image-uploader"
+                showUploadList={false}
+                // beforeUpload={beforeUpload}
+                onChange={handleChange}
+              >
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="avatar"
+                    className="h-full w-full object-contain"
+                    style={{ width: "100%" }}
+                  />
+                ) : (
+                  uploadButton()
+                )}
+              </Upload>
+            </div>
+          </div>
+        </div>
+        <div className="mt-12">
+          <div>
+            <span className="uppercase block text-sm mb-1 font-larkenExtraBold text-black text-opacity-60">
+              Contact Info
+            </span>
+            <hr />
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-4">
+            <div>
+              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
+                Contact Email
+              </h4>
+              <input
+                // disabled={isPending}
+                className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
+                placeholder="Enter contact email"
+                type="text"
+                style={{
+                  fontVariationSettings: '"wght" 400,"opsz" 10',
+                }}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,354 +1,186 @@
 "use client";
 
-import {
-  DatePicker,
-  GetProp,
-  Radio,
-  RadioChangeEvent,
-  Upload,
-  UploadProps,
-} from "antd";
-import Dragger from "antd/es/upload/Dragger";
-import { useState } from "react";
-import { TiUpload } from "react-icons/ti";
-
-function getRandomDarkHexColor() {
-  let color = "#";
-  for (let i = 0; i < 3; i++) {
-    // Generate a random number between 0 and 127 (to keep it dark)
-    let randomValue = Math.floor(Math.random() * 128);
-    // Convert to hexadecimal and ensure it's two digits
-    let hex = randomValue.toString(16).padStart(2, "0");
-    color += hex;
-  }
-  return color;
-}
-
-const props: UploadProps = {
-  name: "file",
-  multiple: true,
-  action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-  onChange(info) {
-    const { status } = info.file;
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    // if (status === "done") {
-    //   message.success(`${info.file.name} file uploaded successfully.`);
-    // } else if (status === "error") {
-    //   message.error(`${info.file.name} file upload failed.`);
-    // }
-  },
-  onDrop(e) {
-    console.log("Dropped files", e.dataTransfer.files);
-  },
-};
-
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
-
-const getBase64 = (img: FileType, callback: (url: string) => void) => {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result as string));
-  reader.readAsDataURL(img);
-};
+import Image from "next/image";
+import Link from "next/link";
+import { FaCalendarCheck, FaUser } from "react-icons/fa6";
+import { IoMdMap } from "react-icons/io";
 
 export default function Home() {
-  const [value, setValue] = useState(1);
-
-  const onChange = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
-    setValue(e.target.value);
-  };
-
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string>();
-
-  const handleChange: UploadProps["onChange"] = (info) => {
-    if (info.file.status === "uploading") {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === "done") {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj as FileType, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-      });
-    }
-  };
-
-  const uploadButton = (label?: string) => (
-    <button
-      style={{ border: 0, background: "none" }}
-      className="flex flex-col items-center justify-center py-3"
-      type="button"
-    >
-      {/* {loading ? <LoadingOutlined /> : <PlusOutlined />} */}
-      <TiUpload className="text-5xl text-black text-opacity-65" />
-      <div className="text-base" style={{ marginTop: 8 }}>
-        {label ?? "Upload Event Image"}
-      </div>
-    </button>
-  );
-
   return (
     <div className="w-screen h-screen bg-primary flex items-center justify-center">
       <div className="w-full max-w-[900px] mx-auto py-2 h-[80vh] overflow-auto">
-        <div>
-          <h2 className="text-appBlack text-[30px] mt-8 font-larkenExtraBold">
-            Create Event
-          </h2>
-        </div>
-        <div className="mt-7">
-          <div>
-            <span className="uppercase block text-sm mb-1 font-larkenExtraBold text-black text-opacity-60">
-              Event Details
-            </span>
-            <hr />
+        <hr className="border-dashed border-[#1f1d1a4d] mt-[20px]" />
+        <hr className="border-dashed border-[#1f1d1a4d] mt-[1px]" />
+
+        <div className="mt-8">
+          <div className="styles_title">
+            <p>
+              <span className="inline-flex mr-2">
+                <FaCalendarCheck />
+              </span>
+              Description
+            </p>
           </div>
-          <div className="mt-4 grid grid-cols-2 gap-4">
-            <div>
-              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
-                Event Title
-              </h4>
-              <input
-                // disabled={isPending}
-                className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
-                placeholder="Enter the Post Title"
-                type="text"
-                style={{
-                  fontVariationSettings: '"wght" 400,"opsz" 10',
-                }}
-              />
-            </div>
-            <div>
-              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
-                Event Date
-              </h4>
-              {/* <input
-                // disabled={isPending}
-                className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
-                placeholder="Enter the Post Title"
-                type="text"
-                style={{
-                  fontVariationSettings: '"wght" 400,"opsz" 10',
-                }}
-              /> */}
-              <DatePicker
-                showTime
-                onChange={(value, dateString) => {
-                  console.log("Selected Time: ", value);
-                  console.log("Formatted Selected Time: ", dateString);
-                }}
-                onOk={() => {}}
-                className="ant-picker-minerva-date"
-              />
-            </div>
-            <div>
-              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
-                Event Description
-              </h4>
-              {/* <input
-                // disabled={isPending}
-                className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
-                placeholder="Enter the Post Title"
-                type="text"
-                style={{
-                  fontVariationSettings: '"wght" 400,"opsz" 10',
-                }}
-              /> */}
-              <textarea
-                // disabled={isPending}
-                className="border text-[16px] w-full resize-none flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
-                placeholder="Enter the Post Title"
-                rows={4}
-                style={{
-                  fontVariationSettings: '"wght" 400,"opsz" 10',
-                }}
-              />
-            </div>
-            <div
-              className="flex flex-col"
-              style={{
-                gridRow: "2 / 4",
-                gridColumn: "2",
-              }}
-            >
-              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
-                Image
-              </h4>
-              <Upload
-                name="avatar"
-                listType="picture-card"
-                className="minerva-event-image-uploader"
-                showUploadList={false}
-                // beforeUpload={beforeUpload}
-                onChange={handleChange}
-              >
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt="avatar"
-                    className="h-full w-full object-contain"
-                    style={{ width: "100%" }}
-                  />
-                ) : (
-                  uploadButton()
-                )}
-              </Upload>
-            </div>
-            <div>
-              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
-                Venue
-              </h4>
-              <Radio.Group
-                className="minerva-venue-radio w-full grid grid-cols-2"
-                onChange={onChange}
-                value={value}
-              >
-                <Radio value={1}>Offline</Radio>
-                <Radio value={2}>Online</Radio>
-              </Radio.Group>
-              <div className="w-full mt-3">
-                {/* <input
-                  // disabled={isPending}
-                  className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
-                  placeholder="Link to the meeting"
-                  type="text"
-                  style={{
-                    fontVariationSettings: '"wght" 400,"opsz" 10',
-                  }}
-                /> */}
-                <input
-                  // disabled={isPending}
-                  className="border text-[16px] w-full flex-1 flex-shrink mb-2 py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
-                  placeholder="Event Venue Details"
-                  type="text"
-                  style={{
-                    fontVariationSettings: '"wght" 400,"opsz" 10',
-                  }}
+        </div>
+        <div>
+          <p>
+            Donald John Trump (born June 14, 1946) is an American politician,
+            media personality, and businessman who served as the 45th
+          </p>
+        </div>
+
+        <div className="mt-8">
+          <div className="styles_divider"></div>
+          <div className="styles_title">
+            <p>
+              <span className="inline-flex mr-2">
+                <FaUser />
+              </span>
+              Organizer
+            </p>
+          </div>
+        </div>
+        <div className="mt-5">
+          <div className="border divide-y divide-dashed divide-[#1f1d1a65] border-dashed border-[#1f1d1a] rounded-2xl bg-lightPrimary">
+            <div className="flex items-center gap-2 p-4">
+              <div>
+                <Image
+                  className="w-6 md:w-8 h-6 md:h-8 rounded-full"
+                  width={30}
+                  height={30}
+                  src="https://content.jdmagicbox.com/comp/ernakulam/m4/0484px484.x484.140206113128.a9m4/catalogue/we-create-events-panampilly-nagar-ernakulam-event-management-companies-nsobpzm660.jpg"
+                  alt="Nothing"
                 />
-                <Upload
-                  name="avatar"
-                  listType="picture-card"
-                  className="minerva-venue-image-uploader"
-                  showUploadList={false}
-                  // beforeUpload={beforeUpload}
-                  onChange={handleChange}
-                >
-                  {imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt="avatar"
-                      className="h-full w-full object-contain"
-                      style={{ width: "100%" }}
-                    />
-                  ) : (
-                    uploadButton("Upload Venue Image")
-                  )}
-                </Upload>
+              </div>
+              <div>
+                <span className="text-base md:text-lg font-featureHeadline">
+                  Tech Innovators Inc.
+                </span>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="mt-12">
-          <div>
-            <span className="uppercase block text-sm mb-1 font-larkenExtraBold text-black text-opacity-60">
-              Organizer Info
-            </span>
-            <hr />
-          </div>
-          <div className="mt-4 grid grid-cols-2 gap-4">
-            <div>
-              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
-                Organizer Name
-              </h4>
-              <input
-                // disabled={isPending}
-                className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
-                placeholder="Enter the name of the organizer"
-                type="text"
-                style={{
-                  fontVariationSettings: '"wght" 400,"opsz" 10',
-                }}
-              />
-            </div>
-            <div>
-              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
-                Organizer Info
-              </h4>
-              {/* <input
-                // disabled={isPending}
-                className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
-                placeholder="Enter the Post Title"
-                type="text"
-                style={{
-                  fontVariationSettings: '"wght" 400,"opsz" 10',
-                }}
-              /> */}
-              <textarea
-                // disabled={isPending}
-                className="border text-[16px] w-full resize-none flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
-                placeholder="Enter the Organizer Info"
-                rows={4}
-                style={{
-                  fontVariationSettings: '"wght" 400,"opsz" 10',
-                }}
-              />
-            </div>
-            <div
-              className="flex flex-col"
-              style={{
-                gridRow: "1 / 3",
-                gridColumn: "2",
-              }}
-            >
-              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
-                Organizer Image
-              </h4>
-              <Upload
-                name="avatar"
-                listType="picture-card"
-                className="minerva-organizer-image-uploader"
-                showUploadList={false}
-                // beforeUpload={beforeUpload}
-                onChange={handleChange}
-              >
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt="avatar"
-                    className="h-full w-full object-contain"
-                    style={{ width: "100%" }}
-                  />
-                ) : (
-                  uploadButton()
-                )}
-              </Upload>
+            <div className="flex-1 p-4">
+              <p className="text-sm mb-1 text-appBlack text-opacity-60">
+                Donald John Trump (born June 14, 1946) is an American
+                politician, media personality, and businessman who served as the
+                45th Donald John Trump (born June 14, 1946) is sman who served
+                as the 45th Donald John Trump (born June 14, 1946) is an
+                American politician, media personality, and businessman who
+                served as the 45th
+              </p>
             </div>
           </div>
         </div>
-        <div className="mt-12">
-          <div>
-            <span className="uppercase block text-sm mb-1 font-larkenExtraBold text-black text-opacity-60">
-              Contact Info
-            </span>
-            <hr />
+
+        <div className="mt-8">
+          <div className="styles_divider"></div>
+          <div className="styles_title">
+            <p>
+              <span className="inline-flex mr-2">
+                <FaUser />
+              </span>
+              Date & Time
+            </p>
           </div>
-          <div className="mt-4 grid grid-cols-2 gap-4">
-            <div>
-              <h4 className="text-[12px] font-helvetica uppercase ml-1 mb-1 text-appBlack">
-                Contact Email
-              </h4>
-              <input
-                // disabled={isPending}
-                className="border text-[16px] w-full flex-1 flex-shrink py-1 px-2 bg-lightPrimary focus:outline-appBlack focus:outline-offset-[-2]"
-                placeholder="Enter contact email"
-                type="text"
-                style={{
-                  fontVariationSettings: '"wght" 400,"opsz" 10',
-                }}
-              />
+        </div>
+        <div className="mt-5">
+          <div className="flex items-center p-4 border divide-x divide-dashed divide-[#1f1d1a19] border-dashed border-[#1f1d1a] rounded-2xl bg-lightPrimary">
+            <div className="flex-1">
+              <p className="text-sm mb-1 text-appBlack text-opacity-60">
+                Starts On:
+              </p>
+              <p>
+                <b>September 07, 2024</b>
+              </p>
+              <p>
+                <b>09:00 AM</b>
+              </p>
+            </div>
+            <div className="flex-1 pl-4">
+              <p className="text-sm mb-1 text-appBlack text-opacity-60">
+                Ends On:
+              </p>
+              <p>
+                <b>September 07, 2024</b>
+              </p>
+              <p>
+                <b>11:00 AM</b>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <div className="styles_divider"></div>
+          <div className="styles_title">
+            <p>
+              <span className="inline-flex mr-2">
+                <FaUser />
+              </span>
+              Venue
+            </p>
+          </div>
+        </div>
+        <div className="mt-5">
+          {/* <div className="flex cursor-pointer items-center before:absolute relative before:top-0 before:left-0 before:w-full before:h-full before:bg-black before:bg-opacity-60 overflow-hidden before:z-[2] border divide-x divide-dashed divide-[#1f1d1a19] border-dashed border-[#1f1d1a] rounded-2xl bg-lightPrimary">
+            <Image
+              className="w-full aspect-video rounded-2xl"
+              width={1000}
+              height={1000}
+              src="https://content.jdmagicbox.com/comp/ernakulam/m4/0484px484.x484.140206113128.a9m4/catalogue/we-create-events-panampilly-nagar-ernakulam-event-management-companies-nsobpzm660.jpg"
+              alt="Nothing"
+            />
+            <div className="absolute bottom-3 md:bottom-5 w-full z-10 px-3 md:px-8 flex items-center justify-between">
+              <div className="text-white">
+                <h3 className="font-featureHeadline text-[18px] md:text-[25px]">
+                  Courtyard, Downtown
+                </h3>
+                <p className="text-white text-[12px] md:text-[16px] text-opacity-40">
+                  Open in maps
+                </p>
+              </div>
+              <div className="w-10 h-10 text-xl text-gray-400 border border-gray-500 rounded-full bg-gray-700 flex items-center justify-center">
+                <IoMdMap />
+              </div>
+            </div>
+          </div> */}
+          <div className="p-4 border divide-x divide-dashed divide-[#1f1d1a19] border-dashed border-[#1f1d1a] rounded-2xl bg-lightPrimary">
+            <div className="flex-1">
+              <p className="text-sm text-appBlack text-opacity-60">
+                Meet link:
+              </p>
+              <Link href={"#"} target="_blank" className="text-appBlue">
+                <b>
+                  <u>https://meet.google.com</u>
+                </b>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <div className="styles_divider"></div>
+          <div className="styles_title">
+            <p>
+              <span className="inline-flex mr-2">
+                <FaUser />
+              </span>
+              Contact
+            </p>
+          </div>
+        </div>
+        <div className="mt-5">
+          <div className="p-4 border divide-x divide-dashed divide-[#1f1d1a19] border-dashed border-[#1f1d1a] rounded-2xl bg-lightPrimary">
+            <div className="flex-1">
+              <p className="text-sm text-appBlack text-opacity-60">Email:</p>
+              <p>
+                <b>saurs2000@gmail.com</b>
+              </p>
+            </div>
+            <div className="flex-1 mt-3">
+              <p className="text-sm text-appBlack text-opacity-60">Phone:</p>
+              <p>
+                <b>+91 93198-25600</b>
+              </p>
             </div>
           </div>
         </div>

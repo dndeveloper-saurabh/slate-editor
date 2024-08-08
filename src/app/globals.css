@@ -36,56 +36,26 @@ body {
   src: url(/assets/fonts/Utopia_Italic.ttf);
 }
 
-:where(.css-dev-only-do-not-override-1uq9j6g).ant-picker-dropdown
-  .ant-picker-panel-container {
-  background: #fcfae4;
+.styles_title,
+.styles_title h1,
+.styles_title h2,
+.styles_title h3,
+.styles_title h4,
+.styles_title h5,
+.styles_title p {
+  font-family: FeatureFlatBold;
+  font-size: 20px !important;
+  line-height: 27px;
+  color: #1f1d1a;
+  margin: 0;
+  margin-bottom: 8px;
+  font-weight: 400;
+  font-variation-settings: "wght" 500, "opsz" 10;
+  text-transform: uppercase;
 }
 
-.ant-picker-minerva-date {
-  width: 100%;
-  border-radius: 0px;
-  background: #fcfae4 !important;
-  height: 34px;
-  border-color: #e5e7eb !important;
-  box-shadow: none !important;
-}
-
-.ant-picker-minerva-date .ant-picker-input input {
-  font-size: 16px;
-  font-family: Helvetica, sans-serif;
-  line-height: 1.4;
-}
-
-.minerva-venue-radio .ant-radio-inner {
-  background: transparent;
-}
-
-.minerva-event-image-uploader {
-  flex: 1;
-  overflow: hidden;
-  height: 100%;
-}
-
-.minerva-event-image-uploader .ant-upload-select {
-  width: 100% !important;
-  overflow: hidden;
-  height: 218px !important;
-  border-radius: 0 !important;
-  background: #fcfae4 !important;
-}
-
-.minerva-organizer-image-uploader .ant-upload-select {
-  width: 100% !important;
-  overflow: hidden;
-  height: 178px !important;
-  border-radius: 0 !important;
-  background: #fcfae4 !important;
-}
-
-.minerva-venue-image-uploader .ant-upload-select {
-  width: 100% !important;
-  overflow: hidden;
-  height: 100px !important;
-  border-radius: 0 !important;
-  background: #fcfae4 !important;
+.styles_divider {
+  border-top: 1px dashed rgba(31, 29, 26, 0.302);
+  margin-bottom: 10px;
+  height: 1px;
 }
